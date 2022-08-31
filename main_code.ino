@@ -46,7 +46,7 @@ class MPU_6050{
 
 		//Raw values
 		int16_t AcX, AcY, AcZ; //Displacement Accelerations
-    int16_t GyX, GyY, GyZ; //Angular Velocities
+    		int16_t GyX, GyY, GyZ; //Angular Velocities
     
 		
 		int16_t Tmp;		   //Temperature 
@@ -149,7 +149,7 @@ class MPU_6050{
 			Serial.println("Calibrating...");
 			unsigned long starting_time=millis();
 			unsigned long N_of_samples=0;
-			
+
 			long offset_sum_x=0, offset_sum_y=0, offset_sum_z=0;
 			double offset_acc_x=0,offset_acc_y=0,offset_acc_z=0;
 
@@ -167,18 +167,17 @@ class MPU_6050{
 
 			offset_x=((double)offset_sum_x)/N_of_samples;
 			offset_y=((double)offset_sum_y)/N_of_samples;
-		  offset_z=((double)offset_sum_z)/N_of_samples;	
+		  	offset_z=((double)offset_sum_z)/N_of_samples;	
 
-		  Wx = offset_acc_x/N_of_samples;
-		  Wy = offset_acc_y/N_of_samples;
-		  Wz = offset_acc_z/N_of_samples;
+		  	Wx = offset_acc_x/N_of_samples;
+		  	Wy = offset_acc_y/N_of_samples;
+			Wz = offset_acc_z/N_of_samples;
 
 
 			double Total_Accel=QSqrt(((double)AcX)*AcX + ((double)AcY)*AcY + ((double)AcZ)*AcZ);
-
-      Theta_x=0.004*asin((double)AcY/Total_Accel)*57.296;
-      Theta_y=0.004*asin((double)AcX/Total_Accel)*(-57.296);
-      Theta_z=0; 
+			Theta_x=0.004*asin((double)AcY/Total_Accel)*57.296;
+			Theta_y=0.004*asin((double)AcX/Total_Accel)*(-57.296);
+			Theta_z=0; 
 
 			Serial.print("Done. ");Serial.print(N_of_samples);Serial.println(" samples taken");
 		}	
@@ -335,9 +334,7 @@ class RC_Receiver{
 
 
 		RC_Receiver(const int throttle_input=3,const int pitch_input=9, const int roll_input=10, const int yaw_input=11):
-		throttle_pin(throttle_input), pitch_pin(pitch_input), roll_pin(roll_input), yaw_pin(yaw_input) {
-			             
-		}
+		throttle_pin(throttle_input), pitch_pin(pitch_input), roll_pin(roll_input), yaw_pin(yaw_input) {}
 
 		bool isIdle(){
 			return (throttle_value<1050);
@@ -420,16 +417,16 @@ void helper(){
 }
 
 void setup(){
-  FrontRight.initialize();
-  FrontLeft.initialize();
-  BackRight.initialize();
-  BackLeft.initialize();
-  
-  Serial.begin(9600); 
+	FrontRight.initialize();
+	FrontLeft.initialize();
+	BackRight.initialize();
+	BackLeft.initialize();
+
+	Serial.begin(9600); 
 	attachInterrupt(digitalPinToInterrupt(3),helper,CHANGE);
 	PCICR |= (1 << PCIE0);                                                                                                                                                     
 	PCMSK0 |= (1 << PCINT1);    //PIN 9                                       
-  PCMSK0 |= (1 << PCINT2);    //PIN 10                                         					                                   
+	PCMSK0 |= (1 << PCINT2);    //PIN 10                                         					                                   
 	Gyro.setup_registers();
 	Gyro.calibrate();
 }
@@ -439,23 +436,23 @@ void PrintVariables(){	//for debugging
 	// Serial.print("Alpha_x = "); Serial.print(Gyro.Alpha_x);
 	// Serial.print(" | Alpha_y = "); Serial.print(Gyro.Alpha_y);
 	// Serial.print(" | Alpha_z = "); Serial.println(Gyro.Alpha_z);
- 
 
- // Serial.print("Omega_x = "); Serial.print(Gyro.Omega_x);
-  //Serial.print(" | Omega_y = "); Serial.print(Gyro.Omega_y);
-  //Serial.print(" | Omega_z = "); Serial.println(Gyro.Omega_z);
-  
 
-  // Serial.print("Theta_x= "); Serial.print(Gyro.Theta_x);
-  // Serial.print(" | Theta_y = "); Serial.print(Gyro.Theta_y);
-  // Serial.print(" | Theta_z = "); Serial.println(Gyro.Theta_z);
-  // Serial.println();
- 
-  Serial.print(" | Thrust_FR = "); Serial.print(FrontRight.getPulseLength());
+	// Serial.print("Omega_x = "); Serial.print(Gyro.Omega_x);
+	//Serial.print(" | Omega_y = "); Serial.print(Gyro.Omega_y);
+	//Serial.print(" | Omega_z = "); Serial.println(Gyro.Omega_z);
+
+
+	// Serial.print("Theta_x= "); Serial.print(Gyro.Theta_x);
+	// Serial.print(" | Theta_y = "); Serial.print(Gyro.Theta_y);
+	// Serial.print(" | Theta_z = "); Serial.println(Gyro.Theta_z);
+	// Serial.println();
+
+	Serial.print(" | Thrust_FR = "); Serial.print(FrontRight.getPulseLength());
 	Serial.print(" | Thrust_FL = "); Serial.print(FrontLeft.getPulseLength());
 	Serial.print(" | Thrust_BR = "); Serial.print(BackRight.getPulseLength());
-  Serial.print(" | Thrust_BL = "); Serial.println(BackLeft.getPulseLength());
-  Serial.println();
+	Serial.print(" | Thrust_BL = "); Serial.println(BackLeft.getPulseLength());
+	Serial.println();
 
 
 }
